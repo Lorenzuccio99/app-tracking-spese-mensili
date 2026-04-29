@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>APP Tracking Spese Mensili</title>
+
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./style.css" />
+
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Tracking Spese" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+</head>
+<body>
+  <main>
+    <header class="app-header app-header-centered">
+      <div>
+        <p class="eyebrow">Tracking personale offline</p>
+        <h1>APP Tracking Spese Mensili</h1>
+      </div>
+    </header>
+
+    <div class="top-grid">
+      <section class="card">
+        <h2>Aggiungi movimento</h2>
+
+      <input id="data" type="date" />
+      <input id="descrizione" type="text" placeholder="Descrizione" />
+      <input id="importo" type="number" placeholder="Importo (€)" step="0.01" min="0" />
+
+      <select id="tipo">
+        <option value="uscita">Uscita</option>
+        <option value="entrata">Entrata</option>
+      </select>
+
+      <select id="categoria"></select>
+
+      <button id="salva">Salva movimento</button>
+      <button id="annullaModifica" class="btn-secondario" style="display: none;">
+        Annulla modifica
+      </button>
+    </section>
+
+    <section class="card">
+      <h2>Dashboard</h2>
+
+      <label for="periodo">Periodo finanziario</label>
+      <select id="periodo"></select>
+
+      <p id="rangePeriodo" class="muted"></p>
+
+      <div class="grid-dashboard">
+        <div class="stat-card">
+          <span>Entrate Totali</span>
+          <strong id="totEntrate" class="numero-positivo">0 €</strong>
+        </div>
+
+        <div id="boxEntrateExtra" class="stat-card stat-card-extra" style="display: none;">
+          <span>Entrate Extra</span>
+          <strong id="totEntrateExtra" class="numero-positivo">0 €</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Uscite Totali</span>
+          <strong id="totUscite" class="numero-negativo">0 €</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Saldo</span>
+          <strong id="saldo" class="numero-positivo">0 €</strong>
+        </div>
+      </div>
+
+      <div class="stats-extra">
+        <p>Giorni rimanenti: <strong id="giorniRimanenti">0</strong></p>
+        <p>Media settimanale uscite: <strong id="mediaGiornaliera">0 €</strong></p>
+        <p>Proiezione fine periodo: <strong id="proiezioneFinePeriodo">0 €</strong></p>
+      </div>
+    </section>
+
+    </section>
+
+    <div class="charts-grid">
+      <section class="card chart-card">
+        <div class="section-title-row">
+          <div>
+            <h2>Uscite mensili</h2>
+            <p class="muted">Confronto dei periodi finanziari in base alle uscite.</p>
+          </div>
+        </div>
+
+        <div class="chart-wrapper">
+          <svg id="graficoMensile" viewBox="0 0 760 320" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </section>
+
+      <section class="card chart-card">
+        <div class="section-title-row">
+          <div>
+            <h2>Spesa per categoria</h2>
+            <p class="muted">Totale speso per categoria nel periodo selezionato.</p>
+          </div>
+        </div>
+
+        <div class="chart-wrapper">
+          <svg id="graficoCategorie" viewBox="0 0 760 320" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </section>
+    </div>
+
+    </div>
+
+
+    <section class="card">
+      <h2>Movimenti</h2>
+
+      <div class="filters">
+        <input id="cercaMovimenti" type="text" placeholder="Cerca descrizione o categoria" />
+
+        <select id="filtroTipo">
+          <option value="tutti">Tutti i tipi</option>
+          <option value="uscita">Solo uscite</option>
+          <option value="entrata">Solo entrate</option>
+        </select>
+
+        <select id="filtroCategoria">
+          <option value="tutte">Tutte le categorie</option>
+        </select>
+
+        <select id="ordinamentoMovimenti">
+          <option value="recenti">Più recenti</option>
+          <option value="vecchi">Più vecchi</option>
+          <option value="importo_desc">Importo più alto</option>
+          <option value="importo_asc">Importo più basso</option>
+        </select>
+
+        <button id="resetFiltri" class="btn-secondario">Reset filtri</button>
+      </div>
+
+      <button id="toggleMovimenti" class="btn-secondario btn-toggle-lista" type="button">
+          Mostra movimenti
+        </button>
+
+        <div id="contenitoreMovimenti" class="movimenti-collassati">
+          <ul id="listaMovimenti"></ul>
+        </div>
+    </section>
+
+    <section class="card budget-section">
+      <div class="section-title-row">
+        <div>
+          <h2>Budget</h2>
+          <p class="muted">Controllo rapido dei limiti per categoria.</p>
+        </div>
+      </div>
+
+      <div class="budget-overview">
+        <div class="budget-mini-card">
+          <span>Entrate Totali</span>
+          <strong id="budgetEntrateBase">0 €</strong>
+        </div>
+
+        <div class="budget-mini-card">
+          <span>Budget Speso</span>
+          <strong id="budgetSpesoTotale" class="numero-negativo">0 €</strong>
+        </div>
+
+        <div class="budget-mini-card">
+          <span>Residuo Totale</span>
+          <strong id="budgetResiduoTotale" class="numero-positivo">0 €</strong>
+        </div>
+      </div>
+
+      <div class="budget-summary compact-summary">
+        <p>Percentuali uscite: <strong id="totPercentBudget">0%</strong></p>
+        <p>Non allocato: <strong id="budgetNonAllocato">0%</strong></p>
+      </div>
+
+            <details class="info-details budget-details">
+        <summary>Mostra / nascondi dettaglio categorie budget</summary>
+        <ul id="listaBudget"></ul>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Spese per categoria</h2>
+      <details class="info-details spese-categoria-details">
+        <summary>Mostra / nascondi dettaglio spese per categoria</summary>
+        <ul id="listaSpeseCategoria"></ul>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Crea Categorie</h2>
+      <p class="muted">Permette di creare le categorie per ogni entrata/uscita.</p>
+
+      <input id="nuovaCategoria" type="text" placeholder="Nome categoria" />
+
+      <select id="tipoCategoria">
+        <option value="uscita">Uscita</option>
+        <option value="entrata">Entrata</option>
+      </select>
+
+      <button id="aggiungiCategoria">Aggiungi categoria</button>
+
+      <details class="categorie-details">
+        <summary>Mostra / nascondi categorie definite</summary>
+        <ul id="listaCategorie"></ul>
+      </details>
+    </section>
+
+    <section class="backup-compact">
+      <span>Backup</span>
+
+      <button id="esportaJson">💾 Backup Completo (JSON)</button>
+      <button id="esportaCsvPeriodo">📅 Backup Mese Finanziario (CSV)</button>
+      <button id="esportaCsv">📊 Backup Mesi (CSV)</button>
+
+      <label for="importaJson" class="backup-import-label">📥 Importa Backup precedente</label>
+      <input id="importaJson" type="file" accept=".json,application/json" />
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
