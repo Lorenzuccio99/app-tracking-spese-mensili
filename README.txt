@@ -106,3 +106,5 @@ Aggiornamento v27:
 - Le barre restano verdi se la categoria è dentro budget.
 - Il colore si aggiorna automaticamente in base a spese, entrate e percentuale budget della categoria.
 - Aggiunta una piccola legenda nel grafico.
+
+Rigenerato file v29 con icona moderna PWA/iPhone.

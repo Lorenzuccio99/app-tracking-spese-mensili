@@ -1,11 +1,16 @@
 {
-  "name": "Spese 27",
-  "short_name": "Spese27",
+  "name": "APP Tracking Spese Mensili",
+  "short_name": "Tracking Spese",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "icons": [
+    {
+      "src": "./icons/icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
     {
       "src": "./icons/icon-192.png",
       "sizes": "192x192",
